@@ -33,7 +33,7 @@ export class AudioEngine {
   private activeSources: Map<number, { source: AudioBufferSourceNode; gain: GainNode }> = new Map();
   private settings: AudioSettings = {
     volume: 1.0,
-    decay: 0.3 // Release time
+    decay: 1.5 // Increased from 0.3 for better piano sustain
   };
   private loadingPromise: Promise<void> | null = null;
 
@@ -148,7 +148,7 @@ export class AudioEngine {
 
     // Attack: Immediate for percussive piano feel
     noteGain.gain.setValueAtTime(0, now);
-    noteGain.gain.linearRampToValueAtTime(1, now + 0.005); // Very fast attack (5ms) to avoid click but keep transient
+    noteGain.gain.linearRampToValueAtTime(1, now + 0.01); 
 
     source.connect(noteGain);
     noteGain.connect(this.masterGain);

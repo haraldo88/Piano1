@@ -9,7 +9,7 @@ function App() {
   const [activeKeys, setActiveKeys] = useState<Set<number>>(new Set());
   const [audioSettings, setAudioSettings] = useState<AudioSettings>({
     volume: 1.0,
-    decay: 0.3
+    decay: 1.5
   });
   
   const isScrollingRef = useRef(false);
@@ -72,17 +72,16 @@ function App() {
       if (scrollContainerRef.current) {
         // Find C4
         const middleCIndex = PIANO_KEYS.findIndex(k => k.note === 'C4');
+        
         // Count ONLY white keys before C4 to calculate pixel distance
         // C4 is index 39 (starting from A0=0)
-        // White keys before C4: A0, B0, C1...B3.
         const whiteKeysBefore = PIANO_KEYS.filter(k => k.index < middleCIndex && k.type === NoteType.WHITE).length;
         
-        // Key Width: 42px
-        // Half Key: 21px
-        // We have px-[50vw] padding on the inner container. 
-        // This means at scrollLeft=0, the start of the keys is at 50vw (center of screen).
-        // To center C4, we need to shift the keys left by the distance from Start to C4 Center.
-        // Distance = (whiteKeysBefore * 42) + 21
+        // Key Width: 42px. 
+        // Half Key (to center): 21px.
+        // Screen padding-left is 50vw, meaning x=0 puts the start of the list at the center.
+        // We want the CENTER of C4 to be at the center of the screen.
+        // We need to shift LEFT by: (Width of all keys before C4) + (Half width of C4).
         
         const scrollPos = (whiteKeysBefore * 42) + 21;
         
@@ -95,15 +94,18 @@ function App() {
 
     // Use requestAnimationFrame to ensure layout is ready
     let rafId: number;
+    let attempts = 0;
+    
     const attemptScroll = () => {
         if (scrollContainerRef.current && scrollContainerRef.current.scrollWidth > 1000) {
             scrollToMiddleC();
-        } else {
+        } else if (attempts < 20) { // Try for ~300ms
+            attempts++;
             rafId = requestAnimationFrame(attemptScroll);
         }
     };
     
-    // Initial delay + RAF loop
+    // Initial delay to allow CSS width calculation
     const t = setTimeout(() => {
         rafId = requestAnimationFrame(attemptScroll);
     }, 50);
