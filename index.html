@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Harald's Piano</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              piano: {
+                white: '#fdfdfd',
+                black: '#1a1a1a',
+                active: '#e0e0e0',
+                activeBlack: '#333333',
+              }
+            },
+            boxShadow: {
+              'key-white': '0 4px 5px rgba(0,0,0,0.2), inset 0 0 10px #fff',
+              'key-white-active': 'inset 0 4px 8px rgba(0,0,0,0.2)',
+              'key-black': '0 2px 4px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.3)',
+              'key-black-active': 'inset 0 2px 4px rgba(0,0,0,0.8)',
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      /* Prevent text selection and default touch behaviors for app-like feel */
+      body {
+        overscroll-behavior: none;
+        user-select: none;
+        -webkit-user-select: none;
+        background-color: #121212;
+      }
+      /* Hide scrollbar but keep functionality */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
